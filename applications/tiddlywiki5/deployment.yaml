@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tiddlywiki
+  namespace: applications
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tiddlywiki
+  template:
+    metadata:
+      labels:
+        app: tiddlywiki
+    spec:
+      volumes:
+      - name: tiddlywiki-nfs-share
+        nfs:
+          server: "192.168.5.91"
+          path: "/storage/k3s"
+          readOnly: false
+      containers:
+      - name: tiddlywiki
+        image: atmosx/arm32v7-tiddlywikiv5.1.13:6
+        volumeMounts:
+        - name: tiddlywiki-nfs-share
+          mountPath: "/data"
+        env:
+        - name: WIKI_NAME
+          value: convalesco

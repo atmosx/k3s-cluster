@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: tiddlywiki
+  namespace: applications
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  rules:
+  - host: tiddlywiki.k3s.convalesco.org
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: tiddlywiki
+          servicePort: http
