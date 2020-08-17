@@ -14,3 +14,10 @@
 
 * [Tiddlywiki5](https://github.com/Jermolene/TiddlyWiki5)
 
+## Helm charts
+
+### nfs-provisioner
+
+```bash
+helm install --set nfs.server=192.168.5.91 --set nfs.path=/storage/k3s --set image.repository=quay.io/external_storage/nfs-client-provisioner-arm stable/nfs-client-provisioner --generate-name
+```

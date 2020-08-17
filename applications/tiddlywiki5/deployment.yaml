@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: tiddlywiki
-  namespace: applications
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -13,12 +13,13 @@ spec:
       labels:
         app: tiddlywiki
     spec:
+      securityContext:
+        runAsUser: 65534
+        runAsGroup: 65534
       volumes:
       - name: tiddlywiki-nfs-share
-        nfs:
-          server: "192.168.5.91"
-          path: "/storage/k3s"
-          readOnly: false
+        persistentVolumeClaim:
+          claimName: tiddlywiki-data
       containers:
       - name: tiddlywiki
         image: atmosx/arm32v7-tiddlywikiv5.1.13:6

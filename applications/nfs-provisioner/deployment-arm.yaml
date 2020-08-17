@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nfs-client-provisioner
+  labels:
+    app: nfs-client-provisioner
+  namespace: default
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: nfs-client-provisioner
+  template:
+    metadata:
+      labels:
+        app: nfs-client-provisioner
+    spec:
+      serviceAccountName: nfs-client-provisioner
+      containers:
+        - name: nfs-client-provisioner
+          image: quay.io/external_storage/nfs-client-provisioner-arm:latest
+          volumeMounts:
+            - name: nfs-client-root
+              mountPath: /data
+          env:
+            - name: PROVISIONER_NAME
+              value: nfs-server
+            - name: NFS_SERVER
+              value: 192.168.5.91
+            - name: NFS_PATH
+              value: /storage/k3s
+      volumes:
+        - name: nfs-client-root
+          nfs:
+            server: 192.168.5.91
+            path: /storage/k3s

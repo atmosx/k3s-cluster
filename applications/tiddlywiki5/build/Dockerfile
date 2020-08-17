@@ -5,10 +5,8 @@ RUN apk update && \
     apk add bash
 RUN npm install -g tiddlywiki@${tiddlywiki_version}
 RUN mkdir /data
-RUN addgroup -g 1001 tuser && \
-    adduser -D -u 1001 -G tuser tuser
-RUN chown tuser:tuser /data
-USER tuser
+RUN chown nobody:nobody /data
+USER nobody
 EXPOSE 8080
 WORKDIR /opt
 COPY . .
