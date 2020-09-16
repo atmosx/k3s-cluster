@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: debug-pod
+spec:
+  containers:
+    - name: debug-pod
+      image: arm32v7/alpine:3
+      command: [ "/bin/sh", "-c", "while true; do sleep 60; done" ]
+  restartPolicy: Never
