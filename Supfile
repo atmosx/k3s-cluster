@@ -1,0 +1,68 @@
+# vi:syntax=yaml
+
+networks:
+  master:
+    hosts:
+      - pi@pi3-node1
+  workers:
+    hosts:
+      - pi@rpi3-node2
+      - pi@rpi3-node3
+      - pi@rpi3-node4
+      - pi@rpi3-node5
+  all:
+    hosts:
+      - pi@rpi3-node1
+      - pi@rpi3-node2
+      - pi@rpi3-node3
+      - pi@rpi3-node4
+      - pi@rpi3-node5
+
+commands:
+  apt_cache:
+    desc: install squid-deb-proxy-client
+    run: sudo apt-get install squid-deb-proxy-client -y
+  reboot:
+    desc: reboot system
+    run: reboot
+  time:
+    desc: setup chrony
+    run: sudo apt-get install chrony -y
+  update:
+    desc: system update
+    run: sudo apt-get update
+  upgrade:
+    desc: system upgrade
+    run: sudo apt-get upgrade -y
+  uname:
+    desc: kernel version
+    run: uname -a
+  install_k3s:
+    desc: install or update k3s in node
+    run: curl -sfL https://get.k3s.io | sh -
+  uninstall_master:
+    desc: uninstall k3s
+    run: /usr/local/bin/k3s-uninstall.sh
+  uninstall_worker:
+    desc: uninstall k3s worker node
+    run: /usr/local/bin/k3s-agent-uninstall.sh
+  install_nfs_common:
+    desc: install nfs drivers
+    run: sudo apt install nfs-common -y
+  install_netdata:
+    desc: install nfs drivers
+    run: sudo apt install netdata -y
+  install_node_exporter:
+    desc: install prometheus node_exporter
+    run: sudo apt install prometheus-node-exporter -y
+  pvc_dir:
+    desc: create pvc dir
+    run: sudo bash -c "mkdir -p /persistentvolumes && chmod 777 /persistentvolumes"
+  restart_k3s:
+    desc: restart k3s daemon
+    run: sudo systemctl restart k3s
+  upload_files:
+    desc: upload configuration files to server
+    upload:
+      - src: ./config/*.yaml
+        dst: /tmp/
