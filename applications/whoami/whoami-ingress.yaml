@@ -1,0 +1,19 @@
+apiVersion:  networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: whoami-ingress
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  # tls:
+  #   - hosts:
+  #     - whoami.k3s.convalesco.org
+  #     secretName: k3s-ssl-certificate
+  rules:
+  - host: whoami.k3s.convalesco.org
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: whoami-service
+          servicePort: http
