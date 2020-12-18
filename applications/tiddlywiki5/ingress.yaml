@@ -5,7 +5,15 @@ metadata:
   namespace: default
   annotations:
     kubernetes.io/ingress.class: traefik
+    acme.kubernetes.io/debug: "true"
+    acme.kubernetes.io/dns: dns_aws
+    acme.kubernetes.io/enable: "true"
+    traefik.ingress.kubernetes.io/redirect-entry-point: https
 spec:
+  tls:
+    - hosts:
+      - tiddlywiki.k3s.convalesco.org
+      secretName: tiddlywiki-ssl-certificate
   rules:
   - host: tiddlywiki.k3s.convalesco.org
     http:

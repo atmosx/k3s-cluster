@@ -1,0 +1,7 @@
+mirrors:
+  docker.io:
+    endpoint:
+      - "https://registry-1.docker.io"
+  proliant:
+    endpoint:
+      - "http://192.168.5.91:5000"

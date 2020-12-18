@@ -1,7 +1,8 @@
+---
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: whoami-ingress
+  name: tekton-ingress
   annotations:
     kubernetes.io/ingress.class: traefik
     acme.kubernetes.io/debug: "true"
@@ -11,13 +12,13 @@ metadata:
 spec:
   tls:
     - hosts:
-      - whoami.k3s.convalesco.org
-      secretName: whoami-ssl-certificate
+      - tekton.k3s.convalesco.org
+      secretName: tekton-ssl-certificate
   rules:
-  - host: whoami.k3s.convalesco.org
+  - host: tekton.k3s.convalesco.org
     http:
       paths:
       - path: /
         backend:
-          serviceName: whoami-service
+          serviceName: tekton-dashboard
           servicePort: http

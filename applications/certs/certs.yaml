@@ -1,0 +1,115 @@
+---
+# Source: certs/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: k3s-certs
+---
+# Source: certs/templates/role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: k3s-certs
+rules:
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["get", "list", "update", "create"]
+- apiGroups: ["extensions"]
+  resources: ["ingresses"]
+  verbs: ["list"]
+---
+# Source: certs/templates/rolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: k3s-certs
+subjects:
+- kind: ServiceAccount
+  name: k3s-certs
+  namespace: "${NAMESPACE}"
+roleRef:
+  kind: Role
+  name: k3s-certs
+  apiGroup: rbac.authorization.k8s.io
+---
+# Source: certs/templates/job.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: k3s-certs
+  labels:
+    app: certs
+    chart: certs-1.1.7
+    release: k3s
+spec:
+  backoffLimit: 1
+  activeDeadlineSeconds: 600
+  ttlSecondsAfterFinished: 120
+  template:
+    metadata:
+      labels:
+        app: certs
+        release: k3s
+    spec:
+      serviceAccountName: k3s-certs
+      containers:
+      - name: k3s-certs
+        image: atmosx/arm32v7-certs:v1.1.8
+        imagePullPolicy: Always
+        env:
+        - name: ACME_MANAGE_ALL_NAMESPACES
+          value: "false"
+        - name: ACME_DEMO_ENABLED
+          value: "false"
+        - name: ACME_DEBUG
+          value: "true"
+        - name: AWS_ACCESS_KEY_ID
+          value: ${AWS_CERT_USER}
+        - name: AWS_SECRET_ACCESS_KEY
+          value: ${AWS_CERT_KEY}
+        - name: AWS_DEFAULT_REGION
+          value: eu-central-1
+      restartPolicy: Never
+---
+# Source: certs/templates/cronjob.yaml
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: k3s-certs
+  labels:
+    app: certs
+    chart: certs-1.1.7
+    release: k3s
+spec:
+  schedule: "0 0,12 * * *"
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    metadata:
+      labels:
+        app: certs
+        release: k3s
+    spec:
+      backoffLimit: 1
+      activeDeadlineSeconds: 600
+      ttlSecondsAfterFinished: 120
+      template:
+        spec:
+          serviceAccountName: k3s-certs
+          containers:
+          - name: k3s-certs
+            image: atmosx/arm32v7-certs:v1.1.8
+            imagePullPolicy: Always
+            env:
+            - name: ACME_MANAGE_ALL_NAMESPACES
+              value: "true"
+            - name: ACME_DEMO_ENABLED
+              value: "false"
+            - name: ACME_DEBUG
+              value: "true"
+            - name: AWS_ACCESS_KEY_ID
+              value: ${AWS_CERT_USER}
+            - name: AWS_SECRET_ACCESS_KEY
+              value: ${AWS_CERT_KEY}
+          restartPolicy: Never
