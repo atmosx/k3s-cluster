@@ -1655,7 +1655,9 @@ spec:
             # The shell image must be root in order to create directories and copy files to PVCs.
             # gcr.io/distroless/base:debug as of November 15, 2020
             # image shall not contains tag, so it will be supported on a runtime like cri-o
-            "-shell-image", "gcr.io/distroless/base@sha256:92720b2305d7315b5426aec19f8651e9e04222991f877cae71f40b3141d2f07e"]
+            #
+            # NOTE: distroless doesn't support arm32v7 - switching to busybox
+            "-shell-image", "arm32v7/busybox:1.32"]
           volumeMounts:
             - name: config-logging
               mountPath: /etc/config-logging
