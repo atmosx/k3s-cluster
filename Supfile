@@ -3,13 +3,16 @@
 networks:
   master:
     hosts:
-      - pi@pi3-node1
+      - pi@rpi3-node1
   workers:
     hosts:
       - pi@rpi3-node2
       - pi@rpi3-node3
       - pi@rpi3-node4
       - pi@rpi3-node5
+  test:
+    hosts:
+      - pi@rpi3-node2
   all:
     hosts:
       - pi@rpi3-node1
@@ -58,11 +61,14 @@ commands:
   pvc_dir:
     desc: create pvc dir
     run: sudo bash -c "mkdir -p /persistentvolumes && chmod 777 /persistentvolumes"
-  restart_k3s:
-    desc: restart k3s daemon
-    run: sudo systemctl restart k3s
-  upload_files:
+  restart_k3-agent:
+    desc: restart k3s daemon (workers)
+    run: sudo systemctl restart k3s-agent.service
+  upload_registries:
     desc: upload configuration files to server
     upload:
-      - src: ./config/*.yaml
+      - src: ./config
         dst: /tmp/
+  setup_registries:
+    desc: copy registries file
+    run: sudo mv /tmp/config/registries.yaml /etc/rancher/k3s/registries.yaml
