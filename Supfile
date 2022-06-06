@@ -27,7 +27,7 @@ commands:
     run: sudo apt-get install squid-deb-proxy-client -y
   reboot:
     desc: reboot system
-    run: reboot
+    run: sudo reboot
   time:
     desc: setup chrony
     run: sudo apt-get install chrony -y
