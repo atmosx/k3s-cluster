@@ -1,12 +1,12 @@
 # k3s cluster
 
-[Lightweight kubernetes](https://k3s.io/) cluster version `v1.18.6+k3s1` with `traefik-1.7` ingress (default).
+[Lightweight kubernetes](https://k3s.io/) cluster version `v1.23.4+k3s1` with `traefik-2.6.1` ingress (default).
 
 ## Cluster details
 
-* 5 x [raspberry Pi 3](https://www.raspberrypi.org/products/raspberry-pi-3-model-b/) nodes (1 API node, 4 orker noders)
-* [raspbian buster lite](https://www.raspberrypi.org/downloads/raspbian/) OS
-* system architecture [armhf](https://wiki.debian.org/ArmHardFloatPort) (arm7v32)
+* 5 x [raspberry Pi 3](https://www.raspberrypi.org/products/raspberry-pi-3-model-b/) nodes (1 API node, 4 worker nodes)
+* [https://dietpi.com/](https://dietpi.com/) OS
+* system architecture [armhf](https://wiki.debian.org/ArmHardFloatPort) (arm7v64)
 * provisioning tools:
   *  [sup](https://github.com/pressly/sup)
   *  [direnv](https://direnv.net/)
@@ -18,13 +18,19 @@
 ## Applications
 
 * [certs](https://github.com/math-nao/certs) - lightweight certification management based on DNS
-* [whoami](https://github.com/traefik/whoami) - simple Golang http application to test ingress
 * [Tiddlywiki5](https://github.com/Jermolene/TiddlyWiki5) - content management software
 * [nfs-provisioner](https://github.com/kubernetes-retired/external-storage/tree/master/nfs) - bind NFS volumes as PVs
-* [Firefly iii](https://www.firefly-iii.org/) - personal finance application, requires MySQL-5.6
-* **debug-pod**: a simple arm32v7 debug pod for troubleshooting purposes
+* **debug-pod**: a simple arm7v64 debug pod for troubleshooting purposes
 
 
 ## Secrets
 
 Secrets exported as shell environment variables, through `.envrc` files, see the [direnv](https://direnv.net/) project for details
+
+## Monitoring (WIP)
+
+- https://sysdig.com/blog/monitor-kubernetes-api-server/
+
+TODO:
+
+* Find a way to monitor containers without in-cluster prometheus instance.
