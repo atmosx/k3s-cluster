@@ -1,6 +1,6 @@
 # k3s cluster
 
-[Lightweight kubernetes](https://k3s.io/) cluster version `v1.23.4+k3s1` with `traefik-2.6.1` ingress (default).
+[Lightweight kubernetes](https://k3s.io/) cluster version `v1.23.4+k3s1` with `traefik` ingress (default).
 
 ## Cluster details
 
@@ -11,23 +11,23 @@
   *  [sup](https://github.com/pressly/sup)
   *  [direnv](https://direnv.net/)
 * HP Proliant microserver (persistence layer):
-  * MySQL database
+  * DBs
   * [apt-cacher-ng](https://wiki.gentoo.org/wiki/Local_distfiles_cache#Using_net-misc.2Fapt-cacher-ng) for easier system updates
-  * Grafana & Prometheus for monitoring
+  * Grafana & Prometheus for node monitoring
 
 ## Applications
 
-* [certs](https://github.com/math-nao/certs) - lightweight certification management based on DNS
-* [Tiddlywiki5](https://github.com/Jermolene/TiddlyWiki5) - content management software
-* [nfs-provisioner](https://github.com/kubernetes-retired/external-storage/tree/master/nfs) - bind NFS volumes as PVs
-* **debug-pod**: a simple arm7v64 debug pod for troubleshooting purposes
+* [certs](https://github.com/math-nao/certs) - lightweight certification management based on DNS, slightly modified to support k8s v1.23 API.
+* [NATS](https://nats.io/) - **really** performant message queue.
+* [nfs-provisioner](https://github.com/kubernetes-retired/external-storage/tree/master/nfs) - bind NFS volumes as PVs.
+* [whoami](https://hub.docker.com/r/containous/whoami) - static HTTP application for testing setup (SSL, etc.)
 
 
 ## Secrets
 
 Secrets exported as shell environment variables, through `.envrc` files, see the [direnv](https://direnv.net/) project for details
 
-## Monitoring (WIP)
+## Application Monitoring (WIP)
 
 - https://sysdig.com/blog/monitor-kubernetes-api-server/
 
