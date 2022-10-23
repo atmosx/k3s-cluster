@@ -3,40 +3,40 @@
 networks:
   master:
     hosts:
-      - pi@rpi3-node1
+      - root@rpi3-node1
   workers:
     hosts:
-      - pi@rpi3-node2
-      - pi@rpi3-node3
-      - pi@rpi3-node4
-      - pi@rpi3-node5
+      - root@rpi3-node2
+      - root@rpi3-node3
+      - root@rpi3-node4
+      - root@rpi3-node5
   test:
     hosts:
-      - pi@rpi3-node2
+      - root@rpi3-node2
   all:
     hosts:
-      - pi@rpi3-node1
-      - pi@rpi3-node2
-      - pi@rpi3-node3
-      - pi@rpi3-node4
-      - pi@rpi3-node5
+      - root@rpi3-node1
+      - root@rpi3-node2
+      - root@rpi3-node3
+      - root@rpi3-node4
+      - root@rpi3-node5
 
 commands:
   apt_cache:
     desc: install squid-deb-proxy-client
-    run: sudo apt-get install squid-deb-proxy-client -y
+    run: apt-get install squid-deb-proxy-client -y
   reboot:
     desc: reboot system
-    run: sudo reboot
+    run: reboot
   time:
     desc: setup chrony
-    run: sudo apt-get install chrony -y
+    run: apt-get install chrony -y
   update:
     desc: system update
-    run: sudo apt-get update
+    run: apt-get update
   upgrade:
     desc: system upgrade
-    run: sudo apt-get upgrade -y
+    run: apt-get upgrade -y
   uname:
     desc: kernel version
     run: uname -a
@@ -51,19 +51,22 @@ commands:
     run: /usr/local/bin/k3s-agent-uninstall.sh
   install_nfs_common:
     desc: install nfs drivers
-    run: sudo apt install nfs-common -y
+    run: apt install nfs-common netbase -y
   install_netdata:
     desc: install nfs drivers
-    run: sudo apt install netdata -y
+    run: apt install netdata -y
   install_node_exporter:
     desc: install prometheus node_exporter
-    run: sudo apt install prometheus-node-exporter -y
+    run: apt install prometheus-node-exporter -y
   pvc_dir:
     desc: create pvc dir
-    run: sudo bash -c "mkdir -p /persistentvolumes && chmod 777 /persistentvolumes"
+    run:  bash -c "mkdir -p /persistentvolumes && chmod 777 /persistentvolumes"
   restart_k3-agent:
     desc: restart k3s daemon (workers)
-    run: sudo systemctl restart k3s-agent.service
+    run: systemctl restart k3s-agent.service
+  showmount:
+    desc: check if NFS works for host
+    run: showmount -e 192.168.5.91
   upload_registries:
     desc: upload configuration files to server
     upload:
@@ -71,4 +74,4 @@ commands:
         dst: /tmp/
   setup_registries:
     desc: copy registries file
-    run: sudo mv /tmp/config/registries.yaml /etc/rancher/k3s/registries.yaml
+    run: mv /tmp/config/registries.yaml /etc/rancher/k3s/registries.yaml
