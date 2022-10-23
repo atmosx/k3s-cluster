@@ -20,7 +20,7 @@ spec:
       serviceAccountName: nfs-client-provisioner
       containers:
         - name: nfs-client-provisioner
-          image: quay.io/external_storage/nfs-client-provisioner-arm:latest
+          image: gcr.io/k8s-staging-sig-storage/nfs-subdir-external-provisioner:arm64-linux-canary
           volumeMounts:
             - name: nfs-client-root
               mountPath: /data
