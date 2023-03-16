@@ -1,10 +1,10 @@
 # vi:syntax=yaml
 
 networks:
-  master:
+  leader:
     hosts:
       - root@rpi3-node1
-  workers:
+  followers:
     hosts:
       - root@rpi3-node2
       - root@rpi3-node3
@@ -43,7 +43,7 @@ commands:
   install_k3s:
     desc: install or update k3s in node
     run: curl -sfL https://get.k3s.io | sh -
-  uninstall_master:
+  uninstall_leader:
     desc: uninstall k3s
     run: /usr/local/bin/k3s-uninstall.sh
   uninstall_worker:
@@ -62,7 +62,7 @@ commands:
     desc: create pvc dir
     run:  bash -c "mkdir -p /persistentvolumes && chmod 777 /persistentvolumes"
   restart_k3-agent:
-    desc: restart k3s daemon (workers)
+    desc: restart k3s daemon (followers)
     run: systemctl restart k3s-agent.service
   showmount:
     desc: check if NFS works for host

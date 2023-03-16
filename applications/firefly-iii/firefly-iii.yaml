@@ -87,7 +87,7 @@ spec:
         tier: frontend
     spec:
       containers:
-      - image: jc5x/firefly-iii
+      - image: jc5x/firefly-iii:version-5.7.15
         name: firefly-iii
         env:
         - name: APP_ENV
@@ -120,7 +120,7 @@ spec:
           name: firefly-iii-export
         - mountPath: "/var/www/firefly-iii/storage/upload"
           name: firefly-iii-upload
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
       volumes:
         - name: firefly-iii-export
           persistentVolumeClaim:
